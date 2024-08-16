@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breast Cancer Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+        .header img {
+            width: 30px;
+            height: 30px;
+            max-height: 300px;
+            object-fit: cover;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            display: grid;
+            gap: 10px;
+            max-width: 600px;
+            margin: auto;
+        }
+        label {
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="number"] {
+            width: calc(100% - 10px);
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+            text-align: center;
+        }
+    </style>
+    <script>
+        function sendFormData() {
+            // Collect values from the form
+            const payload = Array.from(document.querySelectorAll('input')).map(input => parseFloat(input.value));
+
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data['Predicted target variable'])
+                document.getElementById('result').innerText = `Prediction result: ${data['Predicted target variable']}`;
+            })
+            .catch((error) => {
+                document.getElementById('result').innerText = `Error: ${error}`;
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="header">
+        <img  src="https://cdn-icons-png.flaticon.com/512/2769/2769579.png" alt="Header Image">
+    </div>
+    <h1>Breast Cancer Prediction</h1>
+    <form id="dataForm">
+        <label for="id">ID:</label>
+        <input type="number" id="id" name="id" value="842302" step="any"><br>
+
+        <label for="radius_mean">Radius Mean:</label>
+        <input type="number" id="radius_mean" name="radius_mean" value="17.99" step="any"><br>
+
+        <label for="texture_mean">Texture Mean:</label>
+        <input type="number" id="texture_mean" name="texture_mean" value="10.38" step="any"><br>
+
+        <label for="perimeter_mean">Perimeter Mean:</label>
+        <input type="number" id="perimeter_mean" name="perimeter_mean" value="122.8" step="any"><br>
+
+        <label for="area_mean">Area Mean:</label>
+        <input type="number" id="area_mean" name="area_mean" value="1001" step="any"><br>
+
+        <label for="smoothness_mean">Smoothness Mean:</label>
+        <input type="number" id="smoothness_mean" name="smoothness_mean" value="0.1184" step="any"><br>
+
+        <label for="compactness_mean">Compactness Mean:</label>
+        <input type="number" id="compactness_mean" name="compactness_mean" value="0.2776" step="any"><br>
+
+        <label for="concavity_mean">Concavity Mean:</label>
+        <input type="number" id="concavity_mean" name="concavity_mean" value="0.3001" step="any"><br>
+
+        <label for="concave_points_mean">Concave Points Mean:</label>
+        <input type="number" id="concave_points_mean" name="concave_points_mean" value="0.1471" step="any"><br>
+
+        <label for="symmetry_mean">Symmetry Mean:</label>
+        <input type="number" id="symmetry_mean" name="symmetry_mean" value="0.2419" step="any"><br>
+
+        <label for="fractal_dimension_mean">Fractal Dimension Mean:</label>
+        <input type="number" id="fractal_dimension_mean" name="fractal_dimension_mean" value="0.07871" step="any"><br>
+
+        <label for="radius_se">Radius SE:</label>
+        <input type="number" id="radius_se" name="radius_se" value="0.006399" step="any"><br>
+
+        <label for="texture_se">Texture SE:</label>
+        <input type="number" id="texture_se" name="texture_se" value="0.04904" step="any"><br>
+
+        <label for="perimeter_se">Perimeter SE:</label>
+        <input type="number" id="perimeter_se" name="perimeter_se" value="0.05373" step="any"><br>
+
+        <label for="area_se">Area SE:</label>
+        <input type="number" id="area_se" name="area_se" value="0.01587" step="any"><br>
+
+        <label for="smoothness_se">Smoothness SE:</label>
+        <input type="number" id="smoothness_se" name="smoothness_se" value="0.03003" step="any"><br>
+
+        <label for="compactness_se">Compactness SE:</label>
+        <input type="number" id="compactness_se" name="compactness_se" value="0.006193" step="any"><br>
+
+        <label for="concavity_se">Concavity SE:</label>
+        <input type="number" id="concavity_se" name="concavity_se" value="0.01478" step="any"><br>
+
+        <label for="concave_points_se">Concave Points SE:</label>
+        <input type="number" id="concave_points_se" name="concave_points_se" value="0.0023" step="any"><br>
+
+        <label for="symmetry_se">Symmetry SE:</label>
+        <input type="number" id="symmetry_se" name="symmetry_se" value="0.0198" step="any"><br>
+
+        <label for="fractal_dimension_se">Fractal Dimension SE:</label>
+        <input type="number" id="fractal_dimension_se" name="fractal_dimension_se" value="0.07259" step="any"><br>
+
+        <label for="radius_worst">Radius Worst:</label>
+        <input type="number" id="radius_worst" name="radius_worst" value="25.38" step="any"><br>
+
+        <label for="texture_worst">Texture Worst:</label>
+        <input type="number" id="texture_worst" name="texture_worst" value="17.33" step="any"><br>
+
+        <label for="perimeter_worst">Perimeter Worst:</label>
+        <input type="number" id="perimeter_worst" name="perimeter_worst" value="184.6" step="any"><br>
+
+        <label for="area_worst">Area Worst:</label>
+        <input type="number" id="area_worst" name="area_worst" value="2019" step="any"><br>
+
+        <label for="smoothness_worst">Smoothness Worst:</label>
+        <input type="number" id="smoothness_worst" name="smoothness_worst" value="0.1622" step="any"><br>
+
+        <label for="compactness_worst">Compactness Worst:</label>
+        <input type="number" id="compactness_worst" name="compactness_worst" value="0.6656" step="any"><br>
+
+        <label for="concavity_worst">Concavity Worst:</label>
+        <input type="number" id="concavity_worst" name="concavity_worst" value="0.7119" step="any"><br>
+
+        <label for="concave_points_worst">Concave Points Worst:</label>
+        <input type="number" id="concave_points_worst" name="concave_points_worst" value="0.2654" step="any"><br>
+
+        <label for="symmetry_worst">Symmetry Worst:</label>
+        <input type="number" id="symmetry_worst" name="symmetry_worst" value="0.4601" step="any"><br>
+
+        <label for="fractal_dimension_worst">Fractal Dimension Worst:</label>
+        <input type="number" id="fractal_dimension_worst" name="fractal_dimension_worst" value="0.1189" step="any"><br>
+
+        <button type="button" onclick="sendFormData()">Predict with Form Data</button>
+    </form>
+    <div id="result"></div>
+    <br>
+    <center><h5>Output: 1 Malignant Tumor | Output:0 Benign Tumor</h5></center>
+    <br>
+</body>
+</html>
